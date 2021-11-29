@@ -81,16 +81,8 @@ class Cell
         Console.ResetColor();
     }
 
-    public void SetActive(bool isFriend)
+    public void SetColor(ConsoleColor color)
     {
-        if (isFriend)
-        {
-            DrawCell(ConsoleColor.Green, ConsoleColor.Green);
-        }
-        else
-        {
-            DrawCell(ConsoleColor.Red, ConsoleColor.Red);
-        }
+        DrawCell(color, color);
     }
-
 }

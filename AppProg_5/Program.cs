@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AppProg_5
 {
@@ -104,14 +101,14 @@ namespace AppProg_5
 
             var friendlyPoint = InputeCoordinate(true);
             var activeFriendCell = board.Field[friendlyPoint.Y - 1, friendlyPoint.X - 1];
-            activeFriendCell.SetActive(true);
+            activeFriendCell.SetColor(ConsoleColor.Green);
             var index = InputeFigureType() - 1;
             var friendlyFigure = SelectFigure(index, friendlyPoint);
             activeFriendCell.Figure = friendlyFigure;
 
             var hostilePoint = InputeCoordinate(false);
             var activeHostileCell = board.Field[hostilePoint.Y - 1, hostilePoint.X - 1];
-            activeHostileCell.SetActive(false);
+            activeHostileCell.SetColor(ConsoleColor.Red);
 
             Console.Write("1) Одного ли цвета клетки? - ");
             if (board.IsOneColor(activeFriendCell, activeHostileCell))
@@ -132,14 +129,20 @@ namespace AppProg_5
             {
                 Console.WriteLine("Не Угрожает.\n3) Проверим возможность угрозы в два хода.");
                 var tempPoint = friendlyFigure.CreateTwoStepPath(hostilePoint, board);
+                var tempCell = board.Field[tempPoint.Y - 1, tempPoint.X - 1];
                 if (tempPoint.Equals(new Point(-1, -1)))
                 {
-                    Console.WriteLine("Проверка выполнена. Даже за два хода нельзя достич атакуемой фигуры.");
+                    Console.WriteLine("Даже за два хода нельзя достич атакуемой фигуры.");
                 }
                 else
                 {
-                    Console.WriteLine("Проверка выполнена. За два хода можно достич атакуемой фигуры.");
-                    Console.WriteLine("Нужно сначала сделать ход на клетку: [" + tempPoint.X + ";" + tempPoint.Y + "]");
+                    tempCell.SetColor(ConsoleColor.Blue);
+                    Console.WriteLine("За два хода можно достич атакуемой фигуры.");
+                    Console.Write("Нужно сначала сделать ход на");
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write(" клетку:");
+                    Console.ResetColor();
+                    Console.Write(" [" + tempPoint.X + "; " + tempPoint.Y + "]");
                 }
             }
             Console.ResetColor();
