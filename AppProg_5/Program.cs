@@ -28,22 +28,30 @@ namespace AppProg_5
             {
                 dataString = Console.ReadLine();
                 var splitedDataString = dataString.Split(" ");
-                if (int.TryParse(splitedDataString[0], out x) && (int.TryParse(splitedDataString[1], out y)))
+                if (splitedDataString.Length > 1)
                 {
-                    if ((x < 9 && x > 0) && (y < 9 && y > 0))
+                    if (int.TryParse(splitedDataString[0], out x) && (int.TryParse(splitedDataString[1], out y)))
                     {
-                        error = false;
+                        if ((x < 9 && x > 0) && (y < 9 && y > 0))
+                        {
+                            error = false;
+                        }
+                        else
+                        {
+                            Console.Write("Ошибка ввода. Повторите ввод. Числа должны быть в интервале [1,8]: ");
+                        }
+
                     }
                     else
                     {
-                        Console.Write("Ошибка ввода. Повторите ввод. Числа должны быть в интервале [1,8]: ");
+                        Console.Write("Ошибка ввода. Повторите ввод. Первое число отвечает за X, второе за Y: ");
                     }
-
                 }
                 else
                 {
-                    Console.Write("Ошибка ввода. Повторите ввод. Первое число отвечает за X, второе за Y: ");
+                    Console.Write("Ошибка ввода. Повторите ввод. Вы ввели лишь одно число: ");
                 }
+
             }
             return new Point(x, y);
         }
