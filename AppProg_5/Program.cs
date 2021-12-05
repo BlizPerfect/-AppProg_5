@@ -137,13 +137,13 @@ namespace AppProg_5
             {
                 Console.WriteLine("Не Угрожает.\n3) Проверим возможность угрозы в два хода.");
                 var tempPoint = friendlyFigure.CreateTwoStepPath(hostilePoint, board);
-                var tempCell = board.Field[tempPoint.Y - 1, tempPoint.X - 1];
                 if (tempPoint.Equals(new Point(-1, -1)))
                 {
                     Console.WriteLine("Даже за два хода нельзя достич атакуемой фигуры.");
                 }
                 else
                 {
+                    var tempCell = board.Field[tempPoint.Y - 1, tempPoint.X - 1];
                     tempCell.SetColor(ConsoleColor.Blue);
                     Console.WriteLine("За два хода можно достич атакуемой фигуры.");
                     Console.Write("Нужно сначала сделать ход на");

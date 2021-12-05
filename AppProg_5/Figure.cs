@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-
-
 abstract class Figure
 {
     public Point Position { get; protected set; }
