@@ -27,11 +27,10 @@ class MyStupidLogger
 
     public void СallToFinishWork()
     {
-        WriteDown("Успешное окончание работы.");
+        WriteDown("Успешное окончание работы.\n\n");
     }
     public void СallToStartWork()
     {
-        CallToInfo("\n");
         WriteDown("Запуск программы.");
     }
 
