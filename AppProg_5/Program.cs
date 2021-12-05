@@ -5,7 +5,7 @@ namespace AppProg_5
 {
     class Program
     {
-        public static Point InputeCoordinate(bool isFriendly)
+        public static Point InputeCoordinate(bool isFriendly, MyStupidLogger logger)
         {
             var dataString = "";
             var x = 0;
@@ -35,28 +35,31 @@ namespace AppProg_5
                         if ((x < 9 && x > 0) && (y < 9 && y > 0))
                         {
                             error = false;
+                            logger.CallToInfo(System.Reflection.MethodBase.GetCurrentMethod().Name + "\nВвод пользователя принят.");
                         }
                         else
                         {
                             Console.Write("Ошибка ввода. Повторите ввод. Числа должны быть в интервале [1,8]: ");
+                            logger.CallToError(System.Reflection.MethodBase.GetCurrentMethod().Name + "\nВвод пользователя отклонён: выход за интервал [1,8].");
                         }
 
                     }
                     else
                     {
                         Console.Write("Ошибка ввода. Повторите ввод. Первое число отвечает за X, второе за Y: ");
+                        logger.CallToError(System.Reflection.MethodBase.GetCurrentMethod().Name + "\nВвод пользователя отклонён: Ввод не числа.");
                     }
                 }
                 else
                 {
                     Console.Write("Ошибка ввода. Повторите ввод. Вы ввели лишь одно число: ");
+                    logger.CallToError(System.Reflection.MethodBase.GetCurrentMethod().Name + "\nВвод пользователя отклонён: Ввод лишь одного числа.");
                 }
-
             }
             return new Point(x, y);
         }
 
-        public static int InputeFigureType()
+        public static int InputeFigureType(MyStupidLogger logger)
         {
             var result = 0;
             var dataString = "";
@@ -70,15 +73,18 @@ namespace AppProg_5
                     if (result < 5 && result > 0)
                     {
                         error = false;
+                        logger.CallToInfo(System.Reflection.MethodBase.GetCurrentMethod().Name + "\nВвод пользователя принят.");
                     }
                     else
                     {
                         Console.Write("Ошибка ввода. Повторите ввод. Число должнщ быть в интервале [1,4]: ");
+                        logger.CallToError(System.Reflection.MethodBase.GetCurrentMethod().Name + "\nВвод пользователя отклонён: выход за интервал [1,4].");
                     }
                 }
                 else
                 {
-                    Console.Write("Ошибка ввода. Повторите ввод. Вы ввели не число.: ");
+                    Console.Write("Ошибка ввода. Повторите ввод. Вы ввели не число: ");
+                    logger.CallToError(System.Reflection.MethodBase.GetCurrentMethod().Name + "\nВвод пользователя отклонён: Ввод не числа.");
                 }
             }
             return result;
@@ -103,21 +109,33 @@ namespace AppProg_5
 
         static void Main(string[] args)
         {
+            var logger = new MyStupidLogger("log.txt");
+
+            logger.StartStopWatch();
             var board = new Board();
+            logger.StopStopWatch("Игровое поле успешно создано.");
             board.ShowBoard();
             board.ShowFiguresType();
 
-            var friendlyPoint = InputeCoordinate(true);
+            var friendlyPoint = InputeCoordinate(true, logger);
+            logger.StartStopWatch();
             var activeFriendCell = board.Field[friendlyPoint.Y - 1, friendlyPoint.X - 1];
             activeFriendCell.SetColor(ConsoleColor.Green);
-            var index = InputeFigureType() - 1;
+            logger.StopStopWatch("Атакующая фигура успешно создана.");
+            var index = InputeFigureType(logger) - 1;
             var friendlyFigure = SelectFigure(index, friendlyPoint);
             activeFriendCell.Figure = friendlyFigure;
+            logger.CallToInfo("Тип атакующей фигуры успешно назначен.");
 
-            var hostilePoint = InputeCoordinate(false);
+            var hostilePoint = InputeCoordinate(false, logger);
+
+            logger.StartStopWatch();
             var activeHostileCell = board.Field[hostilePoint.Y - 1, hostilePoint.X - 1];
             activeHostileCell.SetColor(ConsoleColor.Red);
+            logger.StopStopWatch("Атакуемая фигура успешно создана.");
 
+            logger.CallToInfo("Вычисляю ответы...");
+            logger.StartStopWatch();
             Console.Write("1) Одного ли цвета клетки? - ");
             if (board.IsOneColor(activeFriendCell, activeHostileCell))
             {
@@ -154,6 +172,8 @@ namespace AppProg_5
                 }
             }
             Console.ResetColor();
+            logger.StopStopWatch("Вычисления завершены");
+            logger.СallToFinishWork();
             Console.ReadKey();
         }
     }
